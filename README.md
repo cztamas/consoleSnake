@@ -1,3 +1,3 @@
 # consoleSnake
 
-The best program ever written
+piece of shit

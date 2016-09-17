@@ -1,1 +1,8 @@
 C:\prog\c#\consoleSnake\consoleSnake\bin\Debug\consoleSnake.exe.config
+C:\prog\c#\consoleSnake\consoleSnake\bin\Debug\consoleSnake.exe
+C:\prog\c#\consoleSnake\consoleSnake\bin\Debug\consoleSnake.pdb
+C:\prog\c#\consoleSnake\consoleSnake\obj\Debug\consoleSnake.csprojResolveAssemblyReference.cache
+C:\prog\c#\consoleSnake\consoleSnake\obj\Debug\consoleSnake.Properties.Resources.resources
+C:\prog\c#\consoleSnake\consoleSnake\obj\Debug\consoleSnake.csproj.GenerateResource.Cache
+C:\prog\c#\consoleSnake\consoleSnake\obj\Debug\consoleSnake.exe
+C:\prog\c#\consoleSnake\consoleSnake\obj\Debug\consoleSnake.pdb

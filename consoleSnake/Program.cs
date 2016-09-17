@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace snake
+namespace consoleSnake
 {
     class Program
     {
-        //1, ha fal van a megfelelő mezőn
+        /* 0, ha üres mező
+         * 1, ha fal van ott
+         * 2, ha "étel"
+         * 3(, 4, ...) a kígyó (vagy kígyók) */
         private static int[,] pálya;
         private static int sorok = 25;
         private static int oszlopok = 30;
@@ -18,7 +21,7 @@ namespace snake
         private static int wait = 150;
 
         static void Main(string[] args)
-        {
+        {            
             PályaKészítő();
             PályaFrissítő();
             snake = new Kígyó();
@@ -82,6 +85,7 @@ namespace snake
             Console.WriteLine("GAME OVER");
         }
 
+        //Inicializálja a pálya tömböt
         private static void PályaKészítő()
         {
             pálya = new int[sorok, oszlopok];
@@ -162,143 +166,5 @@ namespace snake
                 return true;
             return false;
         }
-    }
-
-    struct Pozíció
-    {
-        public int x;
-        public int y;
-
-        public Pozíció(int a, int b)
-        {
-            x = a;
-            y = b;
-        }
-    }
-
-    enum Irány
-    {
-        Fel, Balra, Le, Jobbra
-    }
-
-    static class IrányExtension
-    {
-        public static Irány SzembeIrány(this Irány merre)
-        {
-            int n = ((int)merre + 2) % 4;
-            return (Irány)n;
-        }
-
-        public static int GetX(this Irány merre)
-        {
-            if (merre == Irány.Fel || merre == Irány.Le)
-                return 0;
-            if (merre == Irány.Jobbra)
-                return 1;
-            if (merre == Irány.Balra)
-                return -1;
-            return 666;
-        }
-
-        public static int GetY(this Irány merre)
-        {
-            if (merre == Irány.Jobbra || merre == Irány.Balra)
-                return 0;
-            if (merre == Irány.Fel)
-                return -1;
-            if (merre == Irány.Le)
-                return 1;
-            return 666;
-        }
-    }
-
-    class Kígyó
-    {
-        // a kígyó "testének" x illetve y koordinátái
-        private int[] x;
-        private int[] y;
-        // pillanatnyi haladási irány
-        private Irány merreMegy;
-
-        public Irány MerreMegy
-        {
-            // csak balra vagy jobbra fordulhat, visszafelé nem
-            set
-            {
-                if (value != merreMegy.SzembeIrány())
-                    merreMegy = value;
-            }
-        }
-
-        public Kígyó()
-        {
-            x = new int[8] { 5, 5, 5, 5, 5, 5, 5, 5 };
-            y = new int[8] { 9, 8, 7, 6, 5, 4, 3, 2 };
-            merreMegy = Irány.Jobbra;
-        }
-
-
-        /* akkor hívódik, ha a kígyó helye megváltozik
-         * hogyan: true, ha új mezőt veszünk hozzá, false, ha benne lévőt törlünk */
-        public delegate void KígyóVáltozásKezelő(Pozíció hol, bool hogyan);
-        public delegate void KígyóHalálKezelő();
-
-        public event KígyóVáltozásKezelő KígyóVáltozás;
-        public event KígyóHalálKezelő Megdöglött;
-
-        public void KígyóRajzoló()
-        {
-            int hossz = x.Length;
-            for (int i = 0; i < hossz; i++)
-            {
-                Pozíció hol = new Pozíció(x[i], y[i]);
-                KígyóVáltozás(hol, true);
-            }
-        }
-
-        public void Megyeget(int wait)
-        {
-            Thread.Sleep(wait);
-            Léptet();
-        }
-
-        public void Léptet()
-        {
-            int hossz = x.Length;
-
-            int újX = x[0] + merreMegy.GetX();
-            int újY = y[0] + merreMegy.GetY();
-            int régiX = x[hossz - 1];
-            int régiY = y[hossz - 1];
-
-            Pozíció újPoz = new Pozíció(újX, újY);
-            Pozíció régiPoz = new Pozíció(régiX, régiY);
-            for (int i = hossz - 1; i >= 1; i--)
-            {
-                x[i] = x[i - 1];
-                y[i] = y[i - 1];
-            }
-            x[0] = újX;
-            y[0] = újY;
-
-            if (ÜtközöttE() && Megdöglött != null)
-            {
-                Megdöglött();
-            }
-
-            if (KígyóVáltozás != null)
-            {
-                KígyóVáltozás(újPoz, true);
-                KígyóVáltozás(régiPoz, false);
-            }
-        }
-
-        public void Hosszabbít()
-        { }
-
-        private bool ÜtközöttE()
-        {
-            return false;
-        }
-    }
+    }    
 }
